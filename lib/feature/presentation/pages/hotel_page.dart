@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/common/widgets/app_bar_widget.dart';
 import 'package:hotel_test_app/common/widgets/error_widget.dart';
-import 'package:hotel_test_app/common/widgets/image_widget.dart';
 import 'package:hotel_test_app/common/widgets/loading_indicator_widget.dart';
 import 'package:hotel_test_app/feature/presentation/bloc/hotel_cubit/hotel_cubit.dart';
 import 'package:hotel_test_app/feature/presentation/widgets/hotel_page_widgets/hotel_basic_info_widget.dart';
@@ -27,7 +26,10 @@ class HotelPage extends StatelessWidget {
                 pageController: cubit.pageController,
               ),
               const SizedBox(height: 8.0),
-              HotelDetailInfoWidget(hotel: hotel.aboutTheHotel),
+              HotelDetailInfoWidget(
+                hotel: hotel.aboutTheHotel,
+                features: cubit.features,
+              ),
             ],
           );
         },

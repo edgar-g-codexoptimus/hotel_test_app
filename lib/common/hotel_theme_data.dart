@@ -35,7 +35,16 @@ ThemeData hotelThemeData() => ThemeData(
         bodyMedium: TextStyle(
           fontSize: 18.0,
           fontFamily: Constants.FONT_FAMILY,
-
+        ),
+        titleMedium: TextStyle(
+          color: Color.fromRGBO(44, 48, 51, 1),
+          fontSize: 16.0,
+          fontFamily: Constants.FONT_FAMILY,
+        ),
+        titleSmall: TextStyle(
+          color: Color.fromRGBO(130, 135, 150, 1),
+          fontSize: 14.0,
+          fontFamily: Constants.FONT_FAMILY,
         ),
       ),
       textButtonTheme: TextButtonThemeData(

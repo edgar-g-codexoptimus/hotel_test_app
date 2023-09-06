@@ -16,4 +16,12 @@ class Constants {
   static const String FONT_FAMILY = "SF PRO Display";
 
   static const String ABOUT_HOTEL_TITLE = "Об отеле";
+
+  static const String COMFORT_FEATURE = "Удобства";
+
+  static const String WHAT_INCLUDED_FEATURE = "Что включено";
+
+  static const String WHAT_NOT_INCLUDED_FEATURE = "Что не включено";
+
+  static const String MOST_IMPORTANT = "Самое необходимое";
 }

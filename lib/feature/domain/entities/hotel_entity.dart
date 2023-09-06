@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'about_hotel_entity.dart';
 
 class HotelEntity extends Equatable {
@@ -28,14 +27,14 @@ class HotelEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    address,
-    minimalPrice,
-    priceForIt,
-    rating,
-    ratingName,
-    imageUrls,
-    aboutTheHotel,
-  ];
+        id,
+        name,
+        address,
+        minimalPrice,
+        priceForIt,
+        rating,
+        ratingName,
+        imageUrls,
+        aboutTheHotel,
+      ];
 }
