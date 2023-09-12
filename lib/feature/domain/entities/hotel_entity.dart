@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'about_hotel_entity.dart';
 
+// Сущность для страницы Отель
 class HotelEntity extends Equatable {
   final int id;
   final String name;

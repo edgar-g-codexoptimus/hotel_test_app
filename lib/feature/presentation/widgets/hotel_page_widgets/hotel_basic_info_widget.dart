@@ -3,7 +3,11 @@ import 'package:hotel_test_app/common/widgets/body_field_widget.dart';
 import 'package:hotel_test_app/common/widgets/tag_widget.dart';
 import 'package:hotel_test_app/feature/domain/entities/hotel_entity.dart';
 
+import '../../../../common/constants.dart';
+import '../../../../common/widgets/address_widget.dart';
 import '../../../../common/widgets/image_widget.dart';
+import '../../../../common/widgets/price_widget.dart';
+import '../../../../common/widgets/title_widget.dart';
 
 class HotelBasicInfoWidget extends StatelessWidget {
   const HotelBasicInfoWidget({
@@ -19,6 +23,7 @@ class HotelBasicInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BodyFieldWidget(
+      isHotelBasicWidget: true,
       children: [
         ImageWidget(
           images: _hotel.imageUrls,
@@ -31,36 +36,14 @@ class HotelBasicInfoWidget extends StatelessWidget {
           color: Colors.amber,
         ),
         const SizedBox(height: 10.0),
-        _titleWidget(context),
-        _addressWidget(),
-        _priceWidget(context),
+        titleWidget(context, title: _hotel.name),
+        addressWidget(text: _hotel.address),
+        priceWidget(
+          context,
+          minimalPrice: "от ${_hotel.minimalPrice} ${Constants.RUBLE}",
+          priceForIt: _hotel.priceForIt,
+        ),
       ],
     );
   }
-
-  Widget _titleWidget(BuildContext context) => Text(
-        _hotel.name,
-        style: Theme.of(context).textTheme.titleLarge,
-      );
-
-  Widget _addressWidget() => TextButton(
-        onPressed: () {},
-        child: Text(_hotel.address),
-      );
-
-  Widget _priceWidget(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        children: [
-          Text(
-            "от ${_hotel.minimalPrice} ₽",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          const SizedBox(width: 8.0),
-          Text(
-            _hotel.priceForIt.toLowerCase(),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      );
 }

@@ -5,6 +5,7 @@ import 'package:hotel_test_app/core/usecases/usecase.dart';
 import 'package:hotel_test_app/feature/domain/entities/hotel_entity.dart';
 import 'package:hotel_test_app/feature/domain/repositories/hotel_repository.dart';
 
+// Сценарий получения информации об отеле
 class GetHotel extends UseCase<HotelEntity, NoParams> {
   final HotelRepository _repository;
 

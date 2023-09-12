@@ -21,6 +21,16 @@ ThemeData hotelThemeData() => ThemeData(
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
+        titleMedium: TextStyle(
+          fontSize: 17.0,
+          fontFamily: Constants.FONT_FAMILY,
+          color: Colors.black,
+        ),
+        titleSmall: TextStyle(
+          fontSize: 17.0,
+          fontFamily: Constants.FONT_FAMILY,
+          color: Colors.grey,
+        ),
         bodyLarge: TextStyle(
           fontSize: 30.0,
           fontFamily: Constants.FONT_FAMILY,
@@ -36,19 +46,27 @@ ThemeData hotelThemeData() => ThemeData(
           fontSize: 18.0,
           fontFamily: Constants.FONT_FAMILY,
         ),
-        titleMedium: TextStyle(
-          color: Color.fromRGBO(44, 48, 51, 1),
-          fontSize: 16.0,
-          fontFamily: Constants.FONT_FAMILY,
-        ),
-        titleSmall: TextStyle(
-          color: Color.fromRGBO(130, 135, 150, 1),
-          fontSize: 14.0,
-          fontFamily: Constants.FONT_FAMILY,
-        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.all(0.0))),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(0.0)),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0.0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          backgroundColor: const Color.fromRGBO(13, 114, 255, 1),
+          minimumSize: const Size(double.infinity, 50),
+          textStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontFamily: Constants.FONT_FAMILY,
+          ),
+        ),
       ),
     );

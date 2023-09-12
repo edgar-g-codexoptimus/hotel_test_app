@@ -8,6 +8,8 @@ import 'package:hotel_test_app/feature/presentation/bloc/hotel_cubit/hotel_cubit
 import 'package:hotel_test_app/feature/presentation/widgets/hotel_page_widgets/hotel_basic_info_widget.dart';
 import 'package:hotel_test_app/feature/presentation/widgets/hotel_page_widgets/hotel_detail_info_widget.dart';
 
+import '../../../common/widgets/navigation_button_widget.dart';
+
 class HotelPage extends StatelessWidget {
   const HotelPage({super.key});
 
@@ -29,6 +31,11 @@ class HotelPage extends StatelessWidget {
               HotelDetailInfoWidget(
                 hotel: hotel.aboutTheHotel,
                 features: cubit.features,
+              ),
+              const SizedBox(height: 8.0),
+              NavigationButtonWidget(
+                title: Constants.NAVIGATE_TO_ROOM_TITLE,
+                action: () => cubit.navigateToRoom(context, hotel.name),
               ),
             ],
           );

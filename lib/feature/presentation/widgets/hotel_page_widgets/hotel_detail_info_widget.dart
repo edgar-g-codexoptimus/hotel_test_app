@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_test_app/common/app_icons.dart';
+import 'package:hotel_test_app/common/icons/app_icons.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/common/widgets/body_field_widget.dart';
 import 'package:hotel_test_app/common/widgets/tag_widget.dart';
 import 'package:hotel_test_app/core/utils/hotel_feature.dart';
 
+import '../../../../common/widgets/tag_list_widget.dart';
 import '../../../domain/entities/about_hotel_entity.dart';
 
 class HotelDetailInfoWidget extends StatelessWidget {
@@ -24,7 +25,11 @@ class HotelDetailInfoWidget extends StatelessWidget {
       children: [
         _aboutWidget(context),
         const SizedBox(height: 16.0),
-        _peculiaritiesWidget(),
+        // _peculiaritiesWidget(),
+        tagListWidget(
+          dataList: _aboutHotel.peculiarities,
+          color: Colors.grey.shade600,
+        ),
         const SizedBox(height: 12.0),
         _descriptionWidget(context),
         const SizedBox(height: 16.0),
@@ -36,17 +41,6 @@ class HotelDetailInfoWidget extends StatelessWidget {
   Widget _aboutWidget(BuildContext context) => Text(
         Constants.ABOUT_HOTEL_TITLE,
         style: Theme.of(context).textTheme.titleLarge,
-      );
-
-  Widget _peculiaritiesWidget() => Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: _aboutHotel.peculiarities
-            .map((peculiarity) => TagWidget(
-                  title: peculiarity,
-                  color: Colors.grey.shade600,
-                ))
-            .toList(),
       );
 
   Widget _descriptionWidget(BuildContext context) => Text(
@@ -79,8 +73,8 @@ class HotelDetailInfoWidget extends StatelessWidget {
   ) =>
       ListTile(
         leading: SizedBox(
-          height: 40.0,
-          width: 40.0,
+          height: 30.0,
+          width: 30.0,
           child: feature.icon,
         ),
         title: Text(
@@ -95,5 +89,6 @@ class HotelDetailInfoWidget extends StatelessWidget {
           Icons.arrow_forward_ios,
           color: Colors.black,
         ),
+        horizontalTitleGap: 20.0,
       );
 }
