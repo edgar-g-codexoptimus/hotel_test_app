@@ -1,4 +1,9 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
+import 'package:hotel_test_app/common/constants.dart';
+import 'package:hotel_test_app/common/widgets/error_widget.dart';
+import 'package:hotel_test_app/common/widgets/loading_indicator_widget.dart';
 
 class ImageWidget extends StatefulWidget {
   const ImageWidget({
@@ -33,24 +38,23 @@ class _ImageWidgetState extends State<ImageWidget> {
   }
 
   Widget _imagesWidget() => PageView.builder(
-    itemCount: widget._images.length,
-    controller: widget._controller,
-    pageSnapping: true,
-    physics: const ScrollPhysics(),
-    onPageChanged: _changeIndex,
-    itemBuilder: (context, index) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
-            image: NetworkImage(widget._images[index]),
-            fit: BoxFit.fill,
-          ),
-        ),
+        itemCount: widget._images.length,
+        controller: widget._controller,
+        pageSnapping: true,
+        physics: const ScrollPhysics(),
+        onPageChanged: _changeIndex,
+        itemBuilder: (context, index) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.network(
+              widget._images[index],
+              fit: BoxFit.fill,
+              errorBuilder: (context, error, _) =>
+                  errorWidget(Constants.ERROR_LOADING_IMAGE),
+            ),
+          );
+        },
       );
-    },
-  );
 
   Widget _indicatorsWidget() => Container(
         margin: const EdgeInsets.all(8.0),

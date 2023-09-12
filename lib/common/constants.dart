@@ -144,6 +144,8 @@ class Constants {
 
   static const String PARTY_IMAGE_PATH = "assets/images/party_image.png";
 
+  static const String ERROR_LOADING_IMAGE = "Не удалось загрузить фото";
+
   static const String ADD_TOURIST = "Добавить туриста";
 
   static const String LIMIT_FOR_TOURISTS = "Нельзя добавлять больше 5 туристов";

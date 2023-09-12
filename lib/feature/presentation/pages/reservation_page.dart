@@ -46,26 +46,30 @@ class ReservationPage extends StatelessWidget {
             touristsFormFields = state.touristsFormFields;
           }
 
-          return ListView(
+          return SingleChildScrollView(
             padding: const EdgeInsets.only(top: 8.0),
-            children: [
-              HotelInfoWidget(reservationInfo: reservationInfo),
-              ReservationInfoWidget(reservationInfo: bloc.reservationInfoList),
-              CustomerInfoWidget(formFields: customersFormFields),
-              ListOfTouristsWidget(touristsFormFields: touristsFormFields),
-              AddTouristWidget(
-                action: () => bloc.add(ReservationAddTouristEvent(context)),
-              ),
-              TotalPriceWidget(
-                tourPrice: reservationInfo.tourPrice,
-                fuelCharge: reservationInfo.fuelCharge,
-                serviceCharge: reservationInfo.serviceCharge,
-              ),
-              NavigationButtonWidget(
-                title: "${Constants.PAY} ${bloc.totalPrice} ${Constants.RUBLE}",
-                action: () => bloc.add(ReservationPayEvent(context)),
-              ),
-            ],
+            child: Column(
+              children: [
+                HotelInfoWidget(reservationInfo: reservationInfo),
+                ReservationInfoWidget(
+                    reservationInfo: bloc.reservationInfoList),
+                CustomerInfoWidget(formFields: customersFormFields),
+                ListOfTouristsWidget(touristsFormFields: touristsFormFields),
+                AddTouristWidget(
+                  action: () => bloc.add(ReservationAddTouristEvent(context)),
+                ),
+                TotalPriceWidget(
+                  tourPrice: reservationInfo.tourPrice,
+                  fuelCharge: reservationInfo.fuelCharge,
+                  serviceCharge: reservationInfo.serviceCharge,
+                ),
+                NavigationButtonWidget(
+                  title:
+                      "${Constants.PAY} ${bloc.totalPrice} ${Constants.RUBLE}",
+                  action: () => bloc.add(ReservationPayEvent(context)),
+                ),
+              ],
+            ),
           );
         },
       ),

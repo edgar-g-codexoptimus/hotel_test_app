@@ -88,7 +88,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   String? _validator(String? value) {
     bool valid = widget._validator(value);
 
-    Future.delayed(const Duration(milliseconds: 1), () => _changeColors(valid));
+    if (_autovalidateMode != null)
+      Future.delayed(
+          const Duration(milliseconds: 10), () => _changeColors(valid));
+    else
+      _changeColors(valid);
 
     if (!valid) return Constants.INVALID_DATA;
 
