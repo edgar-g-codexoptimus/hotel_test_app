@@ -7,9 +7,9 @@ sealed class ReservationState extends Equatable {
   List<Object?> get props => [];
 }
 
-class ReservationLoadedState extends ReservationState {
+final class ReservationLoadedState extends ReservationState {
   final ReservationInfoEntity reservationInfo;
-  final FormFields customersFormFields;
+  final List<FormFields> customersFormFields;
   final List<FormFields> touristsFormFields;
 
   const ReservationLoadedState({
@@ -22,9 +22,11 @@ class ReservationLoadedState extends ReservationState {
   List<Object?> get props => [reservationInfo, customersFormFields, touristsFormFields];
 }
 
-class ReservationLoadingState extends ReservationState {}
+final class ReservationAfterWrongValidationState extends ReservationState {}
 
-class ReservationErrorState extends ReservationState {
+final class ReservationLoadingState extends ReservationState {}
+
+final class ReservationErrorState extends ReservationState {
   final String message;
 
   const ReservationErrorState({required this.message});
@@ -33,4 +35,4 @@ class ReservationErrorState extends ReservationState {
   List<Object?> get props => [message];
 }
 
-class ReservationAddedTouristState extends ReservationState {}
+final class ReservationAddedTouristState extends ReservationState {}

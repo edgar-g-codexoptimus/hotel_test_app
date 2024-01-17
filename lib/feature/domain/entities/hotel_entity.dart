@@ -5,7 +5,6 @@ import 'about_hotel_entity.dart';
 class HotelEntity extends Equatable {
   final int id;
   final String name;
-
   final String address;
   final int minimalPrice;
   final String priceForIt;

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_test_app/common/icons/app_icons.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/common/widgets/body_field_widget.dart';
-import 'package:hotel_test_app/common/widgets/tag_widget.dart';
 import 'package:hotel_test_app/core/utils/hotel_feature.dart';
 
 import '../../../../common/widgets/tag_list_widget.dart';

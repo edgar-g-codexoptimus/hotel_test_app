@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_test_app/common/constants.dart';
 
 ThemeData hotelThemeData() => ThemeData(
+      useMaterial3: false,
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0.0,
@@ -69,4 +70,5 @@ ThemeData hotelThemeData() => ThemeData(
           ),
         ),
       ),
+      // inputDecorationTheme: InputDecorationTheme(),
     );

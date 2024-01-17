@@ -6,6 +6,7 @@ import 'package:hotel_test_app/common/widgets/image_widget.dart';
 import 'package:hotel_test_app/common/widgets/price_widget.dart';
 import 'package:hotel_test_app/common/widgets/tag_list_widget.dart';
 import 'package:hotel_test_app/common/widgets/title_widget.dart';
+import 'package:hotel_test_app/core/utils/utils.dart';
 
 import '../../../../common/widgets/tag_widget.dart';
 import '../../../domain/entities/room_entity.dart';
@@ -14,25 +15,20 @@ class RoomCardWidget extends StatelessWidget {
   const RoomCardWidget({
     super.key,
     required RoomEntity room,
-    required PageController pageController,
     required void Function() navigateToReservation,
   })  : _navigateToReservation = navigateToReservation,
-        _pageController = pageController,
         _room = room;
 
   final RoomEntity _room;
-  final PageController _pageController;
   final void Function() _navigateToReservation;
 
   @override
   Widget build(BuildContext context) {
     return BodyFieldWidget(
-      children: [
-        ImageWidget(
+      imageWidget: ImageWidget(
           images: _room.imageUrls,
-          controller: _pageController,
         ),
-        const SizedBox(height: 8.0),
+      children: [
         titleWidget(context, title: _room.name),
         const SizedBox(height: 8.0),
         tagListWidget(
@@ -47,7 +43,7 @@ class RoomCardWidget extends StatelessWidget {
         const SizedBox(height: 16.0),
         priceWidget(
           context,
-          minimalPrice: "${_room.price} ${Constants.RUBLE}",
+          minimalPrice: Utils.convertToPriceFormat(_room.price),
           priceForIt: _room.pricePer,
         ),
         const SizedBox(height: 16.0),

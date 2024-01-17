@@ -1,13 +1,28 @@
 part of 'room_bloc.dart';
 
-@freezed
-class RoomState with _$RoomState {
-  const factory RoomState.loaded({
-    required RoomEntitiesList rooms,
-    required List<PageController> pageControllers,
-  }) = _RoomLoadedState;
+sealed class RoomState extends Equatable {
+  RoomState();
 
-  const factory RoomState.loading() = _RoomLoadingState;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory RoomState.error({required String message}) = _RoomErrorState;
+final class RoomLoadedState extends RoomState {
+  final RoomEntitiesList rooms;
+
+  RoomLoadedState(this.rooms);
+
+  @override
+  List<Object?> get props => [rooms];
+}
+
+final class RoomLoadingState extends RoomState {}
+
+final class RoomErrorState extends RoomState {
+  final String message;
+
+  RoomErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

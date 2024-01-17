@@ -1,38 +1,25 @@
 part of 'reservation_bloc.dart';
 
-sealed class ReservationEvent extends Equatable {
-  const ReservationEvent();
+sealed class ReservationEvent {}
 
-  @override
-  List<Object?> get props => [];
-}
+final class ReservationLoadEvent extends ReservationEvent {}
 
-class ReservationLoadEvent extends ReservationEvent {}
-
-class ReservationPayEvent extends ReservationEvent {
+final class ReservationPayEvent extends ReservationEvent {
   final BuildContext context;
 
-  const ReservationPayEvent(this.context);
-
-  @override
-  List<Object?> get props => [context];
+  ReservationPayEvent(this.context);
 }
 
-class ReservationNavigateToRoomEvent extends ReservationEvent {
+final class ReservationClearTextEditingControllersEvent extends ReservationEvent {}
+
+final class ReservationNavigateToRoomEvent extends ReservationEvent {
   final BuildContext context;
 
-  const ReservationNavigateToRoomEvent(this.context);
-
-  @override
-  List<Object?> get props => [context];
+  ReservationNavigateToRoomEvent(this.context);
 }
 
-class ReservationAddTouristEvent extends ReservationEvent {
+final class ReservationAddTouristEvent extends ReservationEvent {
   final BuildContext context;
 
-  const ReservationAddTouristEvent(this.context);
-
-  @override
-  List<Object?> get props => [context];
+  ReservationAddTouristEvent(this.context);
 }
-

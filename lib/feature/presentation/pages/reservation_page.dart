@@ -1,5 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_test_app/common/constants.dart';
@@ -7,6 +5,7 @@ import 'package:hotel_test_app/common/widgets/app_bar_widget.dart';
 import 'package:hotel_test_app/common/widgets/error_widget.dart';
 import 'package:hotel_test_app/common/widgets/loading_indicator_widget.dart';
 import 'package:hotel_test_app/common/widgets/navigation_button_widget.dart';
+import 'package:hotel_test_app/core/utils/utils.dart';
 import 'package:hotel_test_app/feature/domain/entities/reservation_info_entity.dart';
 import 'package:hotel_test_app/feature/presentation/bloc/reservation_bloc/reservation_bloc.dart';
 import 'package:hotel_test_app/feature/presentation/widgets/reservation_page_widgets/customer_info_widget.dart';
@@ -33,18 +32,17 @@ class ReservationPage extends StatelessWidget {
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
           late ReservationInfoEntity reservationInfo;
-          late FormFields customersFormFields;
+          late List<FormFields> customersFormFields;
           late List<FormFields> touristsFormFields;
 
           if (state is ReservationLoadingState)
             return loadingIndicatorWidget();
-          else if (state is ReservationErrorState)
-            return errorWidget(state.message);
           else if (state is ReservationLoadedState) {
             reservationInfo = state.reservationInfo;
             customersFormFields = state.customersFormFields;
             touristsFormFields = state.touristsFormFields;
-          }
+          } else if (state is ReservationErrorState)
+            return errorWidget(state.message);
 
           return SingleChildScrollView(
             padding: const EdgeInsets.only(top: 8.0),
@@ -65,7 +63,7 @@ class ReservationPage extends StatelessWidget {
                 ),
                 NavigationButtonWidget(
                   title:
-                      "${Constants.PAY} ${bloc.totalPrice} ${Constants.RUBLE}",
+                      "${Constants.PAY} ${Utils.convertToPriceFormat(bloc.totalPrice)}",
                   action: () => bloc.add(ReservationPayEvent(context)),
                 ),
               ],
@@ -76,21 +74,3 @@ class ReservationPage extends StatelessWidget {
     );
   }
 }
-// body: bloc.state.when(
-//   loading: loadingIndicatorWidget,
-//   loaded: (reservationInfo, touristsFormFields) {
-//     return ListView(
-//       padding: const EdgeInsets.symmetric(vertical: 8.0),
-//       children: [
-//         HotelInfoWidget(reservationInfo: reservationInfo),
-//         ReservationInfoWidget(reservationInfo: bloc.reservationInfoList),
-//         CustomerInfoWidget(formFields: bloc.customerFormFields),
-//         ListOfTouristsWidget(touristsFormFields: touristsFormFields),
-//         AddTouristWidget(
-//           action: () => bloc.add(const ReservationEvent.addTourist()),
-//         ),
-//       ],
-//     );
-//   },
-//   error: errorWidget,
-// ),

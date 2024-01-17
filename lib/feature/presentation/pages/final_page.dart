@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_test_app/common/colors/app_colors.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/common/widgets/app_bar_widget.dart';
 import 'package:hotel_test_app/common/widgets/navigation_button_widget.dart';
 import 'package:hotel_test_app/common/widgets/title_widget.dart';
+import 'package:hotel_test_app/feature/presentation/bloc/reservation_bloc/reservation_bloc.dart';
 
 class FinalPage extends StatelessWidget {
   const FinalPage({super.key});
@@ -67,9 +69,7 @@ class FinalPage extends StatelessWidget {
       );
 
   void _navigateToHotelPage(BuildContext context) {
-    while (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
-    // Navigator.popUntil(context, ModalRoute.withName(Constants.INITIAL_ROUTE));
+    context.read<ReservationBloc>().add(ReservationClearTextEditingControllersEvent());
+    Navigator.popUntil(context, ModalRoute.withName(Constants.INITIAL_ROUTE));
   }
 }

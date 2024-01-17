@@ -9,11 +9,11 @@ class Constants {
 
   static const String BASE_URL = "https://run.mocky.io/";
 
-  static const String HOTEL_API_ROUTE = "v3/35e0d18e-2521-4f1b-a575-f0fe366f66e3";
+  static const String HOTEL_API_ROUTE = "v3/d144777c-a67f-4e35-867a-cacc3b827473";
 
-  static const String ROOM_API_ROUTE = "v3/f9a38183-6f95-43aa-853a-9c83cbb05ecd";
+  static const String ROOM_API_ROUTE = "v3/8b532701-709e-4194-a41c-1a903af00195";
 
-  static const String RESERVATION_INFO_API_ROUTE = "v3/e8868481-743f-4eb2-a0d7-2bc4012275c8";
+  static const String RESERVATION_INFO_API_ROUTE = "v3/63866c74-d593-432c-af8e-f279d1a8d2ff";
 
   static const String IMAGE_URLS_JSON_KEY = "image_urls";
 
@@ -102,7 +102,7 @@ class Constants {
 
   static const String GMAIL_COM = "@gmail.com";
 
-  static const String PHONE_MASK = "+7 (###) ###-##-##";
+  static const String PHONE_HINT = "+7 (***) ***-**-**";
 
   static const String ABOUT_CUSTOMER = "Информация о покупателе";
 

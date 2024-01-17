@@ -3,15 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotel_test_app/common/colors/app_colors.dart';
-import 'package:hotel_test_app/common/styles/app_styles.dart';
-import 'package:hotel_test_app/common/constants.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   const TextFormFieldWidget({
     super.key,
     required TextEditingController controller,
     required String labelText,
-    required bool Function(String?) validator,
+    String? hintText,
+    required String? Function(String?) validator,
     required bool isEmail,
     TextInputType? keyboardType,
     List<TextInputFormatter>? inputFormatters,
@@ -20,11 +19,13 @@ class TextFormFieldWidget extends StatefulWidget {
         _keyboardType = keyboardType,
         _validator = validator,
         _labelText = labelText,
+        _hintText = hintText,
         _controller = controller;
 
   final TextEditingController _controller;
   final String _labelText;
-  final bool Function(String?) _validator;
+  final String? _hintText;
+  final String? Function(String?) _validator;
   final TextInputType? _keyboardType;
   final List<TextInputFormatter>? _inputFormatters;
   final bool _isEmail;
@@ -34,83 +35,47 @@ class TextFormFieldWidget extends StatefulWidget {
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+  String? _isValid = null;
   Color _backgroundColor = AppColors.textFormFieldBackground;
-  TextStyle _labelTextStyle = AppStyles.textFormFieldLabelTextStyle();
-  AutovalidateMode? _autovalidateMode;
+  late AutovalidateMode _autovalidateMode;
 
   @override
   void initState() {
-    _autovalidateMode =
-        widget._isEmail ? AutovalidateMode.onUserInteraction : null;
     super.initState();
+    _autovalidateMode = widget._isEmail
+        ? AutovalidateMode.onUserInteraction
+        : AutovalidateMode.disabled;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      decoration: BoxDecoration(
-        color: _backgroundColor,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: TextFormField(
-        controller: widget._controller,
-        decoration: InputDecoration(
-          labelText: widget._labelText,
-          labelStyle: _labelTextStyle,
-          border: InputBorder.none,
-          errorStyle: const TextStyle(height: 0.01, color: Colors.transparent),
+    _backgroundColor = _isValid == null
+        ? AppColors.textFormFieldBackground
+        : AppColors.textFormFieldErrorColor;
+
+    return TextFormField(
+      autovalidateMode: _autovalidateMode,
+      controller: widget._controller,
+      decoration: InputDecoration(
+        labelText: widget._labelText,
+        hintText: widget._hintText,
+        border: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
         ),
-        autovalidateMode: _autovalidateMode,
-        keyboardType: widget._keyboardType,
-        validator: _validator,
-        onTapOutside: (_) {
-          if (widget._isEmail) _autovalidateMode = null;
-        },
-        onChanged: (_) {
-          if (_autovalidateMode == null && widget._isEmail) {
-            _autovalidateMode =
-                widget._isEmail ? AutovalidateMode.onUserInteraction : null;
-          }
-        },
-        onTap: () {
-          if (_autovalidateMode == null && widget._isEmail) {
-            _autovalidateMode =
-                widget._isEmail ? AutovalidateMode.onUserInteraction : null;
-          }
-        },
-        inputFormatters: widget._inputFormatters,
-        // onSaved: ,
+        filled: true,
+        fillColor: _backgroundColor,
+        labelStyle: TextStyle(color: Colors.grey.shade600),
+        errorStyle: const TextStyle(fontSize: 0.1, color: Colors.transparent),
       ),
+      keyboardType: widget._keyboardType,
+      validator: (value) {
+        _isValid = widget._validator(value);
+
+        return _isValid;
+      },
+      onTapOutside: widget._isEmail ? (_) => setState(() {}) : null,
+      inputFormatters: widget._inputFormatters,
     );
-  }
-
-  String? _validator(String? value) {
-    bool valid = widget._validator(value);
-
-    if (_autovalidateMode != null)
-      Future.delayed(
-          const Duration(milliseconds: 10), () => _changeColors(valid));
-    else
-      _changeColors(valid);
-
-    if (!valid) return Constants.INVALID_DATA;
-
-    return null;
-  }
-
-  void _changeColors(bool isValid) async {
-    switch (isValid) {
-      case true:
-        setState(() {
-          _backgroundColor = AppColors.textFormFieldBackground;
-          _labelTextStyle = AppStyles.textFormFieldLabelTextStyle();
-        });
-      case false:
-        setState(() {
-          _backgroundColor = AppColors.textFormFieldErrorColor;
-          _labelTextStyle = AppStyles.textFormFieldLabelTextErrorStyle();
-        });
-    }
   }
 }

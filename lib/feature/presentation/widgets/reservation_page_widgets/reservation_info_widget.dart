@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_test_app/common/widgets/body_field_widget.dart';
-import 'package:hotel_test_app/feature/domain/entities/reservation_info_entity.dart';
 
 class ReservationInfoWidget extends StatelessWidget {
   const ReservationInfoWidget({

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_test_app/common/widgets/error_widget.dart';
 import 'package:hotel_test_app/common/widgets/loading_indicator_widget.dart';
+import 'package:hotel_test_app/feature/domain/entities/room_entities_list.dart';
 import 'package:hotel_test_app/feature/presentation/bloc/room_bloc/room_bloc.dart';
 import 'package:hotel_test_app/feature/presentation/widgets/room_page_widgets/room_card_widget.dart';
 
@@ -21,11 +22,18 @@ class RoomPage extends StatelessWidget {
     return Scaffold(
       appBar: appBarWidget(
         title: _hotelName,
-        action: () => bloc.add(RoomEvent.navigateToHotel(context)),
+        action: () => bloc.add(RoomNavigateToHotelEvent(context)),
       ),
-      body: bloc.state.when(
-        loading: loadingIndicatorWidget,
-        loaded: (rooms, pageControllers) {
+      body: BlocBuilder<RoomBloc, RoomState>(
+        builder: (context, state) {
+          late RoomEntitiesList rooms;
+
+          if (state is RoomLoadingState)
+            return loadingIndicatorWidget();
+          else if (state is RoomLoadedState)
+            rooms = state.rooms;
+          else if (state is RoomErrorState) return errorWidget(state.message);
+
           return ListView.separated(
             padding: const EdgeInsets.only(top: 10.0),
             shrinkWrap: true,
@@ -34,14 +42,12 @@ class RoomPage extends StatelessWidget {
                 const SizedBox(height: 8.0),
             itemBuilder: (context, index) => RoomCardWidget(
               room: rooms.rooms[index],
-              pageController: pageControllers[index],
               navigateToReservation: () => bloc.add(
-                RoomEvent.navigateToReservation(context),
+                RoomNavigateToReservationEvent(context),
               ),
             ),
           );
         },
-        error: errorWidget,
       ),
     );
   }

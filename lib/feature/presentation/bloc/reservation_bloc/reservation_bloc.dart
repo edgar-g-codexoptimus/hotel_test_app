@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, prefer_conditional_assignment
+import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +21,16 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
 
   late ReservationInfoEntity _reservationInfo;
 
+  final List<FormFields> _customerFormFields = [
+    PhoneFormField(),
+    EmailFormField(),
+  ];
+
   final List<FormFields> _touristsFormFields = [
     TouristFormFields(),
   ];
 
-  final _customerFormFields = CustomerFormFields();
-
-  bool _isCustomerFormValid = false;
+  List<bool> _isCustomerFormValid = [false, false];
 
   List<bool> _isTouristsFormValid = [false];
 
@@ -40,9 +43,10 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       (event, emit) => _navigateToRoomEvent(event),
     );
 
-    on<ReservationPayEvent>(
-      (event, emit) => _payEvent(event),
-    );
+    on<ReservationPayEvent>(_payEvent);
+
+    on<ReservationClearTextEditingControllersEvent>(
+        _clearTextEditingControllersEvent);
 
     on<ReservationAddTouristEvent>(
       (event, emit) => _addTouristEvent(event, emit),
@@ -69,13 +73,26 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     Navigator.pop(event.context);
   }
 
-  void _payEvent(ReservationPayEvent event) {
+  void _payEvent(ReservationPayEvent event, Emitter<ReservationState> emit) {
     _checkCustomerFormValid();
     _checkTouristsFormFields();
 
-    if (_isCustomerFormValid) {
-      if (!_isTouristsFormValid.contains(false))
+    if (!_isCustomerFormValid.contains(false)) {
+      if (!_isTouristsFormValid.contains(false)) {
         Navigator.pushNamed(event.context, Constants.FINAL_ROUTE);
+      } else {
+        emit(ReservationAfterWrongValidationState());
+        emit(ReservationLoadedState(
+            reservationInfo: _reservationInfo,
+            customersFormFields: _customerFormFields,
+            touristsFormFields: _touristsFormFields));
+      }
+    } else {
+      emit(ReservationAfterWrongValidationState());
+      emit(ReservationLoadedState(
+          reservationInfo: _reservationInfo,
+          customersFormFields: _customerFormFields,
+          touristsFormFields: _touristsFormFields));
     }
   }
 
@@ -101,18 +118,28 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     }
   }
 
+  void _clearTextEditingControllersEvent(
+    ReservationClearTextEditingControllersEvent event,
+    Emitter<ReservationState> emit,
+  ) {
+    _clearTextEditingControllers();
+  }
+
   void _checkTouristsFormFields() {
     for (var i = 0; i < _touristsFormFields.length; i++) {
-      if (_isTouristsFormValid[i] == false)
+      if (_isTouristsFormValid[i] == false) {
         _isTouristsFormValid[i] =
             _touristsFormFields[i].formKey.currentState?.validate() ?? false;
+      }
     }
   }
 
   void _checkCustomerFormValid() {
-    if (_isCustomerFormValid == false)
-      _isCustomerFormValid =
-          _customerFormFields.formKey.currentState?.validate() ?? false;
+    for (var i = 0; i < _customerFormFields.length; i++) {
+      if (_isCustomerFormValid[i] == false)
+        _isCustomerFormValid[i] =
+            _customerFormFields[i].formKey.currentState?.validate() ?? false;
+    }
   }
 
   List<Map<String, String>> get reservationInfoList => [
@@ -130,9 +157,23 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
         {Constants.NUTRITION: _reservationInfo.nutrition},
       ];
 
-  FormFields get customerFormFields => _customerFormFields;
+  List<FormFields> get customerFormFields => _customerFormFields;
 
   List<FormFields> get touristsFormFields => _touristsFormFields;
+
+  void _clearTextEditingControllers() {
+    _touristsFormFields.forEach((element) {
+      element.controllers.forEach((element) {
+        element.clear();
+      });
+    });
+
+    _customerFormFields.forEach((element) {
+      element.controllers.forEach((element) {
+        element.clear();
+      });
+    });
+  }
 
   int get totalPrice =>
       _reservationInfo.tourPrice +

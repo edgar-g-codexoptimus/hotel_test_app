@@ -1,10 +1,17 @@
 part of 'room_bloc.dart';
 
-@freezed
-class RoomEvent with _$RoomEvent {
-  const factory RoomEvent.load() = RoomLoadEvent;
+sealed class RoomEvent {}
 
-  const factory RoomEvent.navigateToReservation(BuildContext context) = RoomNavigateToReservationEvent;
+final class RoomLoadEvent extends RoomEvent {}
 
-  const factory RoomEvent.navigateToHotel(BuildContext context) = RoomNavigateToHotelEvent;
+final class RoomNavigateToReservationEvent extends RoomEvent {
+  final BuildContext context;
+
+  RoomNavigateToReservationEvent(this.context);
+}
+
+final class RoomNavigateToHotelEvent extends RoomEvent {
+  final BuildContext context;
+
+  RoomNavigateToHotelEvent(this.context);
 }

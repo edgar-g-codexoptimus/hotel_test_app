@@ -51,6 +51,8 @@ class MyApp extends StatelessWidget {
 
             case Constants.FINAL_ROUTE:
               return MaterialPageRoute(builder: (context) => const FinalPage());
+            default:
+              return MaterialPageRoute(builder: (context) => const HotelPage());
           }
         },
         home: const HotelPage(),

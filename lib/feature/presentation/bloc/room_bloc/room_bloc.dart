@@ -1,6 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/core/usecases/params/no_params.dart';
 import 'package:hotel_test_app/feature/domain/entities/room_entities_list.dart';
@@ -13,14 +13,10 @@ part 'room_state.dart';
 
 part 'room_event.dart';
 
-part 'room_bloc.freezed.dart';
-
 class RoomBloc extends Bloc<RoomEvent, RoomState> {
   final GetRooms _getRooms;
 
-  late List<PageController> _pageControllers;
-
-  RoomBloc(this._getRooms) : super(const RoomState.loading()) {
+  RoomBloc(this._getRooms) : super(RoomLoadingState()) {
     on<RoomLoadEvent>(
       (event, emit) async => await _loadEvent(emit),
     );
@@ -37,17 +33,9 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     final failureOrRooms = await _getRooms(NoParams());
 
     failureOrRooms.fold(
-      (failure) => emit(RoomState.error(message: mapFailureToMessage(failure))),
+      (failure) => emit(RoomErrorState(mapFailureToMessage(failure))),
       (rooms) {
-        _pageControllers = List.generate(
-          rooms.rooms.length,
-          (index) => PageController(),
-        );
-
-        emit(RoomState.loaded(
-          rooms: rooms,
-          pageControllers: _pageControllers,
-        ));
+        emit(RoomLoadedState(rooms));
       },
     );
   }
@@ -60,11 +48,5 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     event.context.read<ReservationBloc>().add(ReservationLoadEvent());
 
     Navigator.pushNamed(event.context, Constants.RESERVATION_ROUTE);
-  }
-
-  @override
-  Future<void> close() {
-    _pageControllers.forEach((controller) => controller.dispose());
-    return super.close();
   }
 }

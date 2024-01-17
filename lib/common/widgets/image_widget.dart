@@ -1,20 +1,16 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_test_app/common/constants.dart';
-import 'package:hotel_test_app/common/widgets/error_widget.dart';
 import 'package:hotel_test_app/common/widgets/loading_indicator_widget.dart';
 
 class ImageWidget extends StatefulWidget {
   const ImageWidget({
     super.key,
     required List<String> images,
-    required PageController controller,
-  })  : _controller = controller,
-        _images = images;
+  })  : _images = images;
 
   final List<String> _images;
-  final PageController _controller;
 
   @override
   State<ImageWidget> createState() => _ImageWidgetState();
@@ -26,6 +22,7 @@ class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: MediaQuery.sizeOf(context).width,
       height: 270.0,
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -37,23 +34,34 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  Widget _imagesWidget() => PageView.builder(
+  Widget _imagesWidget() => CarouselSlider.builder(
         itemCount: widget._images.length,
-        controller: widget._controller,
-        pageSnapping: true,
-        physics: const ScrollPhysics(),
-        onPageChanged: _changeIndex,
-        itemBuilder: (context, index) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
+        options: CarouselOptions(
+          height: 270.0,
+          viewportFraction: 1,
+          enableInfiniteScroll: false,
+          onPageChanged: (index, reason) => _changeIndex(index),
+        ),
+        itemBuilder: (context, index, realIndex) => Container(
+          margin: EdgeInsets.symmetric(horizontal: 10.0),
+          width: MediaQuery.sizeOf(context).width,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
             child: Image.network(
               widget._images[index],
               fit: BoxFit.fill,
-              errorBuilder: (context, error, _) =>
-                  errorWidget(Constants.ERROR_LOADING_IMAGE),
+              loadingBuilder: (context, child, loadingProgress) =>
+                  loadingProgress != null ? loadingIndicatorWidget() : child,
+              errorBuilder: (context, error, stackTrace) => Center(
+                child: Icon(
+                  Icons.photo,
+                  color: Colors.black,
+                  size: 60.0,
+                ),
+              ),
             ),
-          );
-        },
+          ),
+        ),
       );
 
   Widget _indicatorsWidget() => Container(

@@ -11,13 +11,11 @@ class TouristInfoWidget extends StatefulWidget {
     super.key,
     required FormFields formFields,
     required int position,
-
   })  : _position = position,
         _formFields = formFields;
 
   final FormFields _formFields;
   final int _position;
-
 
   @override
   State<TouristInfoWidget> createState() => _TouristInfoWidgetState();
@@ -29,9 +27,22 @@ class _TouristInfoWidgetState extends State<TouristInfoWidget> {
   @override
   Widget build(BuildContext context) {
     return BodyFieldWidget(
-      children: _isCollapsed ? _collapsedWidget() : _notCollapsedWidget(),
+      // children: _isCollapsed ? _collapsedWidget() : _notCollapsedWidget(),
+      children: _widgets(),
     );
   }
+
+  List<Widget> _widgets() => [
+        _titleWidget(),
+        if (!_isCollapsed) const SizedBox(height: 8.0),
+        Visibility(
+          child: formWidget(
+            formFields: widget._formFields,
+          ),
+          maintainState: true,
+          visible: !_isCollapsed,
+        ),
+      ];
 
   List<Widget> _collapsedWidget() => [_titleWidget()];
 

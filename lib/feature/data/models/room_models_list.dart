@@ -1,4 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotel_test_app/feature/data/models/room_model.dart';
 import 'package:hotel_test_app/feature/domain/entities/room_entities_list.dart';
 

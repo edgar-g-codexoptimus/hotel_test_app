@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_test_app/common/styles/app_styles.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/common/widgets/body_field_widget.dart';
-import 'package:retrofit/http.dart';
+import 'package:hotel_test_app/core/utils/utils.dart';
 
 class TotalPriceWidget extends StatelessWidget {
   const TotalPriceWidget({
@@ -63,7 +63,7 @@ class TotalPriceWidget extends StatelessWidget {
       children: values
           .map((value) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text("$value ${Constants.RUBLE}",
+            child: Text(Utils.convertToPriceFormat(value),
                 style: value != _totalPrice
                     ? Theme.of(context).textTheme.titleMedium
                     : AppStyles.totalPriceTextStyle()),

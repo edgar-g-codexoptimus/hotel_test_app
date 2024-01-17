@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/constants.dart';
 
@@ -32,5 +33,12 @@ class Utils {
       default:
         return "";
     }
+  }
+
+  static String convertToPriceFormat(int price) {
+    final numFormat =
+        NumberFormat.simpleCurrency(locale: "ru_RU", decimalDigits: 0);
+
+    return numFormat.format(price);
   }
 }

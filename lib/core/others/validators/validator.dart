@@ -13,17 +13,22 @@ class Validator {
         value.contains(Constants.GMAIL_COM));
   }
 
-  static bool validate<T extends ValidatorsType>(String? value) {
+  static String? _validate(bool condition) {
+    if (condition) return "";
+    return null;
+  }
+
+  static String? validate<T extends ValidatorsType>(String? value) {
+
     switch (T) {
       case Email:
-        if (value == null || value.isEmpty || _isNotCorrectlyDomain(value))
-          return false;
+        return _validate(
+            value == null || value.isEmpty || _isNotCorrectlyDomain(value));
       case Phone:
-        if (value == null || value.isEmpty || value.length != 18) return false;
+        return
+            _validate(value == null || value.isEmpty || value.length != 18);
       default:
-        if (value == null || value.isEmpty) return false;
+        return _validate(value == null || value.isEmpty);
     }
-
-    return true;
   }
 }

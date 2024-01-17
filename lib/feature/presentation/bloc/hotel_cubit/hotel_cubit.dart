@@ -1,6 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hotel_test_app/common/icons/app_icons.dart';
 import 'package:hotel_test_app/common/constants.dart';
 import 'package:hotel_test_app/core/mapping/map_failure_to_message.dart';
@@ -13,25 +13,21 @@ import '../../../domain/usecases/get_hotel.dart';
 
 part 'hotel_state.dart';
 
-part 'hotel_cubit.freezed.dart';
 
 class HotelCubit extends Cubit<HotelState> {
   final GetHotel _getHotel;
 
-  final _pageController = PageController();
-
-  HotelCubit(this._getHotel) : super(const HotelState.loading());
+  HotelCubit(this._getHotel) : super(HotelLoadingState());
 
   void loadHotel() async {
     final failureOrHotel = await _getHotel(NoParams());
 
     failureOrHotel.fold(
-      (failure) => emit(HotelState.error(mapFailureToMessage(failure))),
-      (hotel) => emit(HotelState.loaded(hotel)),
+      (failure) => emit(HotelErrorState(mapFailureToMessage(failure))),
+      (hotel) => emit(HotelLoadedState(hotel)),
     );
   }
 
-  PageController get pageController => _pageController;
 
   List<HotelFeature> get features => [
         HotelFeature(
@@ -49,14 +45,8 @@ class HotelCubit extends Cubit<HotelState> {
       ];
 
   void navigateToRoom(BuildContext context, String hotelName) {
-    context.read<RoomBloc>().add(const RoomEvent.load());
+    context.read<RoomBloc>().add(RoomLoadEvent());
 
     Navigator.pushNamed(context, Constants.ROOM_ROUTE, arguments: hotelName);
-  }
-
-  @override
-  Future<void> close() {
-    _pageController.dispose();
-    return super.close();
   }
 }
